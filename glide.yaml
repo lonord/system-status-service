@@ -1,0 +1,13 @@
+package: github.com/lonord/system-status-service
+import:
+- package: github.com/labstack/echo
+  version: ^3.3.6
+  subpackages:
+  - middleware
+- package: github.com/lonord/sse
+- package: github.com/shirou/gopsutil
+  version: ^2.18.7
+  subpackages:
+  - cpu
+  - disk
+  - mem

@@ -1,0 +1,52 @@
+hash: 3e6d619d945927c715d3b1c17e293a3322fb7b45b942c2369204fdbc424e4dd1
+updated: 2018-10-07T21:22:49.787983+08:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: 3af4c746e1c248ee8491a3e0c6f7a9cd831e95f8
+- name: github.com/go-ole/go-ole
+  version: 7a0fa49edf48165190530c675167e2f319a05268
+  subpackages:
+  - oleutil
+- name: github.com/labstack/echo
+  version: 1abaa3049251d17932e4313c2d6165073fd07fd8
+  subpackages:
+  - middleware
+- name: github.com/labstack/gommon
+  version: 2a618302b929cc20862dda3aa6f02f64dbe740dd
+  subpackages:
+  - bytes
+  - color
+  - log
+  - random
+- name: github.com/lonord/sse
+  version: 6fed362a44a2b4479a47d80bbcc615be74fc6522
+- name: github.com/manucorporat/sse
+  version: ee05b128a739a0fb76c7ebd3ae4810c1de808d6d
+- name: github.com/mattn/go-colorable
+  version: efa589957cd060542a26d2dd7832fd6a6c6c3ade
+- name: github.com/mattn/go-isatty
+  version: 3fb116b820352b7f0c281308a4d6250c22d94e27
+- name: github.com/shirou/gopsutil
+  version: 8048a2e9c5773235122027dd585cf821b2af1249
+  subpackages:
+  - cpu
+  - disk
+  - internal/common
+  - mem
+- name: github.com/StackExchange/wmi
+  version: b12b22c5341f0c26d88c4d66176330500e84db68
+- name: github.com/valyala/bytebufferpool
+  version: cdfbe9377474227bb42120c1e22fd4433e7f69bf
+- name: github.com/valyala/fasttemplate
+  version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
+- name: golang.org/x/crypto
+  version: e3636079e1a4c1f337f212cc5cd2aca108f6c900
+  subpackages:
+  - acme
+  - acme/autocert
+- name: golang.org/x/sys
+  version: e4b3c5e9061176387e7cea65e4dc5853801f3fb7
+  subpackages:
+  - unix
+  - windows
+testImports: []
