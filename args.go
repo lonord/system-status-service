@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 )
 
@@ -22,7 +23,8 @@ func handleCmdArgs() *CmdOption {
 	flag.IntVar(&o.Port, "port", 2020, "service listen port")
 	flag.Parse()
 	if *versionPtr {
-		//
+		fmt.Println("version", appVersion)
+		fmt.Println("build time", buildTime)
 		os.Exit(0)
 	}
 	return o

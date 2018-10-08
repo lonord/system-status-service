@@ -1,45 +1,68 @@
 #!/bin/bash
 
-VERSION=1.0
-APP_NAME=sss
-PACKAGE_NAME=sys-status-service
-BUILD_TIME=$(date "+%F %T")
+APP_NAME=system-status-service
+APP_VERSION=1.0
+BUILD_TIME=$(date "+%F %T %Z")
 
-cd $(dirname $0)
-
-if [ ! -e "dist" ]; then
-	mkdir dist
-fi
+DIST_DIR=dist
 
 gobuild() {
-	if [ -e "dist/tmp" ]; then
-		rm -rf dist/tmp
-		mkdir dist/tmp
+	echo "building $1 $2"
+	ext=""
+	if [ "$1" == "windows" ]; then
+		ext=".exe"
 	fi
-	go build -o dist/tmp/usr/local/bin/$APP_NAME \
+	target_dir=$DIST_DIR/$1/$2
+	rm -rf $target_dir
+	GOOS=$1 GOARCH=$2 go build -o $target_dir/${APP_NAME}_$1_$2${ext} \
 	-ldflags \
 	"\
-	-X 'main.appVersion=${VERSION}' \
+	-X 'main.appName=${APP_NAME}' \
+	-X 'main.appVersion=${APP_VERSION}' \
 	-X 'main.buildTime=${BUILD_TIME}' \
 	" \
 	.
 }
 
-build_deb() {
-	gobuild
-	rm -rf dist/linux/$1
-	mkdir -p dist/linux/$1
-	fpm -s dir -t deb -a $1 -p dist/linux/$1/${PACKAGE_NAME}_v${VERSION}_$1.deb -n $APP_NAME -v ${VERSION} -C dist/tmp .
+showhelp() {
+	echo "Usage: build.sh [-w] [-m] -[l]"
+	echo "    -w  build windows executable"
+	echo "    -m  build macos executable"
+	echo "    -l  build linux executable"
 }
 
-# build deb x64
+cd "$( dirname "$0" )"
 export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=amd64
-build_deb amd64
 
-# build deb armhf
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=arm
-build_deb armhf
+if [ $# -gt 0 ]; then
+	for arg in $*
+	do
+		case $arg in
+			-w)
+				build_windows=1
+			;;
+			-m)
+				build_mac=1
+			;;
+			-l)
+				build_linux=1
+			;;
+		esac
+	done
+else
+	showhelp
+	exit 0
+fi
+
+if [ -n "$build_mac" ]; then
+	gobuild darwin amd64
+fi
+if [ -n "$build_linux" ]; then
+	gobuild linux amd64
+	gobuild linux 386
+	gobuild linux arm
+fi
+if [ -n "$build_windows" ]; then
+	gobuild windows amd64
+	gobuild windows 386
+fi
