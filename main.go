@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -14,10 +15,11 @@ import (
 )
 
 func main() {
-	addr := "0.0.0.0:2020"
+	opt := handleCmdArgs()
+	addr := fmt.Sprintf("%s:%d", opt.Host, opt.Port)
 	s := createWebServer()
 	go func() {
-		log.Println("server listens at http://", addr)
+		log.Printf("server listens at http://%s\n", addr)
 		if err := s.Start(addr); err != nil {
 			log.Println("shutting down the server")
 		}
