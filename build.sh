@@ -6,7 +6,9 @@ DIST_DIR=dist
 BUILD_TIME=$(date "+%F %T %Z")
 
 WINDOWS_ARCH=386,amd64
-LINUX_ARCH=386,amd64,arm
+LINUX_ARCH=386,amd64,arm,arm64
+
+CURRENT_ARCH=$(go env GOARCH)
 
 gobuild() {
 	echo "building $1 $2"
@@ -33,10 +35,10 @@ gobuild() {
 showhelp() {
 	echo "Usage: build.sh [-m] [-w] [-l] [-s]"
 	echo "    -m  build macos executable of amd64"
-	echo "    -w  build windows executables of all arch ($WINDOWS_ARCH)"
-	echo "    -w[=<arch>,...]  build windows executables of specific arch"
-	echo "    -l  build linux executables of all arch ($LINUX_ARCH)"
-	echo "    -l[=<arch>,...]  build linux executables of specific arch"
+	echo "    -w  build windows executable of current arch ($CURRENT_ARCH)"
+	echo "    -w[=<arch>,...]  build windows executables of specific arch ($WINDOWS_ARCH)"
+	echo "    -l  build linux executable of current arch ($CURRENT_ARCH)"
+	echo "    -l[=<arch>,...]  build linux executables of specific arch ($LINUX_ARCH)"
 	echo "    -s  append os type and arch suffix of executable name (use 'foo_linux_amd64' instead of 'foo')"
 }
 
@@ -63,13 +65,13 @@ if [ $# -gt 0 ]; then
 				build_mac=1
 			;;
 			-w)
-				build_windows=$WINDOWS_ARCH
+				build_windows=$CURRENT_ARCH
 			;;
 			-w=*)
 				build_windows=${arg#*-w=}
 			;;
 			-l)
-				build_linux=$LINUX_ARCH
+				build_linux=$CURRENT_ARCH
 			;;
 			-l=*)
 				build_linux=${arg#*-l=}
