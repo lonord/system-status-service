@@ -117,6 +117,4 @@ if [ -n "$build_windows" ]; then
 			echo "unknow arch $var, skip"
 		fi
 	done
-	gobuild windows amd64
-	gobuild windows 386
 fi
