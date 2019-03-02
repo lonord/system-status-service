@@ -1,8 +1,11 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/shirou/gopsutil/disk"
@@ -13,9 +16,11 @@ import (
 )
 
 const readDuration = time.Second
+const tempClassPath = "/sys/class/thermal/thermal_zone0/temp"
 
 type CPUInfo struct {
 	Usage []float64 `json:"usage"`
+	Temp  int       `json:"temp"`
 }
 
 type MemoryInfo struct {
@@ -47,6 +52,7 @@ func readCPUInfo() (*CPUInfo, error) {
 	}
 	return &CPUInfo{
 		pers,
+		readTemp(),
 	}, nil
 }
 
@@ -112,4 +118,17 @@ func readSystemInfoAll() SystemInfo {
 		Memory: <-memoryInfoC,
 		Disk:   <-diskInfoC,
 	}
+}
+
+func readTemp() int {
+	b, err := ioutil.ReadFile(tempClassPath)
+	if err != nil {
+		return -1
+	}
+	s := strings.TrimRight(string(b), "\n")
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		return -1
+	}
+	return n
 }
